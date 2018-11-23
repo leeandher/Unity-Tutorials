@@ -34,4 +34,13 @@ public class PlayerController : MonoBehaviour {
 		// multiplying it by 'speed' - our public player speed that appears in the inspector
 		rb.AddForce (movement * speed);
 	}
-}
+
+    // Deactivate pickups
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Pick Up"))
+        {
+            other.gameObject.SetActive(false);
+        }
+    }
+} 
