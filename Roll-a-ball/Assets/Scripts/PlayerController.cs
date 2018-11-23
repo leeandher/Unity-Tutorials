@@ -9,15 +9,21 @@ public class PlayerController : MonoBehaviour {
 	
 	// Create public variables for player speed, and for the Text UI game objects
 	public float speed;
+    public Text countText;
+    public Text winText;
 
 	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
 	private Rigidbody rb;
+    private int count;
 
 	// At the start of the game..
 	void Start ()
 	{
 		// Assign the Rigidbody component to our private rb variable
 		rb = GetComponent<Rigidbody>();
+        count = 0;
+        SetCountText();
+        winText.text = "";
 	}
 
 	// Each physics step..
@@ -41,6 +47,17 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.CompareTag("Pick Up"))
         {
             other.gameObject.SetActive(false);
+            count = count + 1;
+            SetCountText();
         }
+    }
+    
+    void SetCountText()
+    {
+        if (count >= 20)
+        {
+            winText.text = "You Win!";
+        }
+        countText.text = "Score: " + count.ToString();
     }
 } 
