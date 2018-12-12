@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
 
     // Components
     private Rigidbody rb;
+    private AudioSource audio;
 
     // Other game objects
     public GameObject shot;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour {
     {
         // Get the rigidbody component
         rb = GetComponent<Rigidbody>();
+        audio = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -38,6 +40,7 @@ public class PlayerController : MonoBehaviour {
         {
             nextFire = Time.time + fireRate;
             Instantiate(shot, shotSpawn.position, shotSpawn.rotation); // as GameObject;
+            audio.Play();
         }
     }
 
