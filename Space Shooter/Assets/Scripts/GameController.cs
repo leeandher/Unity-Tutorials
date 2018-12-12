@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
@@ -17,13 +18,36 @@ public class GameController : MonoBehaviour {
 
     // GUI
     public Text scoreText;
+    public Text restartText;
+    public Text gameOverText;
     private int score;
 
+    // Game tracking
+    private bool gameOver;
+    private bool restart;
+    
+    // Initialize parameters
     private void Start()
     {
         score = 0;
+        gameOver = false;
+        restart = false;
+        gameOverText.text = "";
+        restartText.text = "";
         UpdateScore();
         StartCoroutine( SpawnWaves() );
+    }
+
+    // Check for user input on the 'R' key for restart
+    private void Update()
+    {
+        if (restart)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+        }
     }
 
     // Allows SpawnWaves to be called repeatedly via a Coroutine
@@ -31,7 +55,7 @@ public class GameController : MonoBehaviour {
     {
         yield return new WaitForSeconds(startWait);
 
-        // Never stop the waves;
+        // Never stop the waves
         while(true)
         {
             for (int i = 0; i < hazardCount; i++)
@@ -43,6 +67,12 @@ public class GameController : MonoBehaviour {
             }
             yield return new WaitForSeconds(waveWait);
 
+            if (gameOver)
+            {
+                restartText.text = "Press 'R' to Restart";
+                restart = true;
+                break;
+            }
         }
     }
 
@@ -57,5 +87,12 @@ public class GameController : MonoBehaviour {
     private void UpdateScore()
     {
         scoreText.text = "Score: " + score;
+    }
+
+    // Run this function when the game ends
+    public void GameOver()
+    {
+        gameOverText.text = "Game Over!";
+        gameOver = true;
     }
 }
